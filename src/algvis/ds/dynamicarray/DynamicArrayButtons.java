@@ -23,11 +23,11 @@ public class DynamicArrayButtons extends Buttons {
 	@Override
 	public void actionButtons(JPanel P) {
 		pushB = new IButton("button-push");
-		pushB.setMnemonic(KeyEvent.VK_I);
+		pushB.setMnemonic(KeyEvent.VK_U);
 		pushB.addActionListener(this);
 
 		popB = new IButton("button-pop");
-		popB.setMnemonic(KeyEvent.VK_D);
+		popB.setMnemonic(KeyEvent.VK_O);
 		popB.addActionListener(this);
 
 		P.add(pushB);
@@ -50,6 +50,13 @@ public class DynamicArrayButtons extends Buttons {
 				panel.newAlgorithmPool();
 				((DynamicArray) D).pop();
 		}
+	}
+	
+	@Override
+	public void setOtherEnabled(boolean enabled) {
+		super.setOtherEnabled(enabled);
+		pushB.setEnabled(enabled);
+		popB.setEnabled(enabled);
 	}
 }
 

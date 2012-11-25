@@ -2,8 +2,9 @@ package algvis.ds.dynamicarray;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ConcurrentModificationException;
+
+import algvis.core.Array;
 import algvis.core.DataStructure;
-import algvis.core.visual.Array;
 import algvis.internationalization.Languages;
 import algvis.ui.VisPanel;
 import algvis.ui.view.Alignment;
@@ -20,7 +21,7 @@ public class DynamicArray extends DataStructure implements ClickListener  {
 		super(panel);
 		panel.screen.V.setDS(this);
 		panel.screen.V.align = Alignment.LEFT;
-		A = new Array(0,zDepth);
+		A = new Array(zDepth, 0, 100);
 	}
 
 	@Override
@@ -30,9 +31,7 @@ public class DynamicArray extends DataStructure implements ClickListener  {
 
 	@Override
 	public String stats() {
-		return Languages.getString("size") + ": 0;   "
-				+ Languages.getString("height") + ": 0;   #"
-				+ Languages.getString("excess") + ": 0";
+		return Languages.getString("size") + ": " + A.getSize() + ";   ";
 	}
 
 	@Override
@@ -48,7 +47,7 @@ public class DynamicArray extends DataStructure implements ClickListener  {
 
 	@Override
 	public void clear() {
-		A = new Array(0,zDepth);
+		A = new Array(zDepth, 0, 100);
 		panel.scene.clear();
 		panel.scene.add(this);
 		//setStats();
@@ -64,7 +63,7 @@ public class DynamicArray extends DataStructure implements ClickListener  {
 	@Override
 	public void move() throws ConcurrentModificationException {
 		if (!A.isEmpty()) {
-			A.moveArray();
+			A.move();
 		}	
 	}
 
