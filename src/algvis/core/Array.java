@@ -15,8 +15,8 @@ public class Array extends VisualElement {
 	public int begin;
 	public int capacity;
 
-	public volatile int x = 0;
-	public volatile int y = 100;
+	public volatile int x;
+	public volatile int y;
 	public int tox;
 	public int toy;
 
@@ -24,7 +24,7 @@ public class Array extends VisualElement {
 		super(zDepth);
 		list = new Stack<Integer>();
 		begin = 0;
-		capacity = 1;
+		capacity = 2;
 		this.x = x;
 		this.y = y;
 	}
@@ -33,7 +33,7 @@ public class Array extends VisualElement {
 	public static final int INVISIBLE = 0;
 	public static final int VISIBLE = 1;
 
-	public static final int SIZE = 10;
+	public static final int RADIUS = 10;
 	public static final int STEPS = 10;
 	protected int steps;
 
@@ -46,12 +46,12 @@ public class Array extends VisualElement {
 	}
 
 	public void push(int x) {
-		list.add(x);
+		list.push(x);
 	}
 
 	public void pop() {
 		if (!list.isEmpty()) {
-			list.remove(list.size() - 1);
+			list.pop();
 		}
 	}
 
@@ -64,7 +64,7 @@ public class Array extends VisualElement {
 			drawArray(v);
 			v.setColor(Color.BLACK);
 			for (int n = begin; n < list.size(); n++) {
-				drawKey(v, n, 2 * n * SIZE, y);
+				drawKey(v, n, 2 * n * Array.RADIUS, y);
 			}
 		}
 	}
@@ -81,9 +81,9 @@ public class Array extends VisualElement {
 			} else {
 				v.setColor(Color.lightGray);
 			}
-			v.fillSqr(2 * n * SIZE, y, SIZE);
+			v.fillSqr(2 * n * Array.RADIUS, y, Array.RADIUS);
 			v.setColor(Color.BLACK);
-			v.drawSquare(2 * n * SIZE, y, SIZE);
+			v.drawSquare(2 * n * Array.RADIUS, y, Array.RADIUS);
 		}
 	}
 
@@ -103,9 +103,8 @@ public class Array extends VisualElement {
 
 	@Override
 	public Rectangle2D getBoundingBox() {
-		// ?
-		int r = 1;
-		return new Rectangle2D.Double(x - r, y - r, 2 * r, 2 * r);
+		return new Rectangle2D.Double(x - RADIUS, y - RADIUS, 2 * RADIUS
+				* capacity, 2 * RADIUS);
 	}
 
 	@Override

@@ -9,17 +9,16 @@ import algvis.internationalization.IButton;
 import algvis.ui.Buttons;
 import algvis.ui.VisPanel;
 
-
 public class DynamicArrayButtons extends Buttons {
 	private static final long serialVersionUID = -5243676195282879059L;
-	
-	private IButton pushB;	
+
+	private IButton pushB;
 	private IButton popB;
 
 	public DynamicArrayButtons(VisPanel panel) {
 		super(panel);
 	}
-	
+
 	@Override
 	public void actionButtons(JPanel P) {
 		pushB = new IButton("button-push");
@@ -33,11 +32,11 @@ public class DynamicArrayButtons extends Buttons {
 		P.add(pushB);
 		P.add(popB);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		super.actionPerformed(evt);
-		
+
 		if (evt.getSource() == pushB) {
 			if (panel.history.canRedo())
 				panel.newAlgorithmPool();
@@ -48,10 +47,10 @@ public class DynamicArrayButtons extends Buttons {
 		} else if (evt.getSource() == popB) {
 			if (panel.history.canRedo())
 				panel.newAlgorithmPool();
-				((DynamicArray) D).pop();
+			((DynamicArray) D).pop();
 		}
 	}
-	
+
 	@Override
 	public void setOtherEnabled(boolean enabled) {
 		super.setOtherEnabled(enabled);
@@ -59,6 +58,3 @@ public class DynamicArrayButtons extends Buttons {
 		popB.setEnabled(enabled);
 	}
 }
-
-
-
