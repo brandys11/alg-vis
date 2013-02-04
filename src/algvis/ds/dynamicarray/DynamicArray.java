@@ -1,11 +1,14 @@
 package algvis.ds.dynamicarray;
 
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ConcurrentModificationException;
+
 import algvis.core.Array;
-import algvis.core.Bank;
+import algvis.core.CStack;
 import algvis.core.DataStructure;
 import algvis.internationalization.Languages;
+import algvis.ui.Fonts;
 import algvis.ui.VisPanel;
 import algvis.ui.view.Alignment;
 import algvis.ui.view.ClickListener;
@@ -16,14 +19,23 @@ public class DynamicArray extends DataStructure implements ClickListener {
 	public static String dsName = "dynamicarray";
 
 	Array A;
-	Bank B;
+	CStack stackM;
+	CStack stackC;
+	CStack stackN;
 
 	public DynamicArray(VisPanel panel) {
 		super(panel);
 		panel.screen.V.setDS(this);
 		panel.screen.V.align = Alignment.LEFT;
-		A = new Array(zDepth, 0, 100);
-		B = new Bank(zDepth, 10, 10, 0);
+		A = new Array(zDepth, 0, 150);
+		A.state = Array.INVISIBLE;
+		stackN = new CStack(zDepth, 0, 0, CStack.RADIUS * 2 + 5);
+		for (int i = 0; i < 6; i++) {
+			stackN.push(Color.BLUE);
+		}
+		stackN.capacity = 0;
+		stackC = new CStack(zDepth, 50, 50, CStack.RADIUS);
+		stackM = new CStack(zDepth, 50, 100, CStack.RADIUS);
 	}
 
 	@Override
@@ -49,8 +61,10 @@ public class DynamicArray extends DataStructure implements ClickListener {
 
 	@Override
 	public void clear() {
-		A = new Array(zDepth, 0, 100);
-		B.value = 0;
+		A = new Array(zDepth, 0, 150);
+		stackN.capacity = 0;
+		stackC = new CStack(zDepth, 50, 50, CStack.RADIUS);
+		stackM = new CStack(zDepth, 50, 100, CStack.RADIUS);
 		A.state = Array.INVISIBLE;
 		panel.scene.add(this);
 		//setStats();
@@ -58,8 +72,12 @@ public class DynamicArray extends DataStructure implements ClickListener {
 
 	@Override
 	public void draw(View v) {
-		B.draw(v);
+		stackN.draw(v);
+		stackM.draw(v);
+		stackC.draw(v);
 		A.draw(v);
+		v.drawString("Copy: ", 0, 50, Fonts.LARGE);
+		v.drawString("Resize: ", 0, 100, Fonts.LARGE);
 	}
 
 	@Override
