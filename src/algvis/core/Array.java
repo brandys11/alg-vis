@@ -85,6 +85,12 @@ public class Array extends VisualElement {
 			v.setColor(Color.BLACK);
 			v.drawSquare(2 * n * Array.RADIUS, y, Array.RADIUS);
 		}
+		v.setColor(Color.RED);
+		v.fillRect(capacity * Array.RADIUS - Array.RADIUS, y, 1, Array.RADIUS);
+		v.setColor(Color.BLUE);
+		if (capacity != 2)
+			v.fillRect(capacity / 2 * Array.RADIUS - Array.RADIUS, y, 1,
+					Array.RADIUS);
 	}
 
 	public void goTo(int tox, int toy) {

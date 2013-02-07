@@ -3,12 +3,12 @@ package algvis.ds.dynamicarray;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ConcurrentModificationException;
+import java.util.Stack;
 
 import algvis.core.Array;
 import algvis.core.CStack;
 import algvis.core.DataStructure;
 import algvis.internationalization.Languages;
-import algvis.ui.Fonts;
 import algvis.ui.VisPanel;
 import algvis.ui.view.Alignment;
 import algvis.ui.view.ClickListener;
@@ -18,10 +18,10 @@ public class DynamicArray extends DataStructure implements ClickListener {
 	public static String adtName = "dynamicarray";
 	public static String dsName = "dynamicarray";
 
-	Array A;
-	CStack stackM;
-	CStack stackC;
-	CStack stackN;
+	public Array A;
+	CStack newstack;
+	public Stack<CStack> pushstack;
+	public Stack<CStack> popstack;
 
 	public DynamicArray(VisPanel panel) {
 		super(panel);
@@ -29,13 +29,13 @@ public class DynamicArray extends DataStructure implements ClickListener {
 		panel.screen.V.align = Alignment.LEFT;
 		A = new Array(zDepth, 0, 150);
 		A.state = Array.INVISIBLE;
-		stackN = new CStack(zDepth, 0, 0, CStack.RADIUS * 2 + 5);
+		pushstack = new Stack<>();
+		popstack = new Stack<>();
+		newstack = new CStack(zDepth, 0, 0, CStack.RADIUS * 2 + 5, 0);
 		for (int i = 0; i < 6; i++) {
-			stackN.push(Color.BLUE);
+			newstack.push(Color.BLUE);
+			newstack.capacity = 0;
 		}
-		stackN.capacity = 0;
-		stackC = new CStack(zDepth, 50, 50, CStack.RADIUS);
-		stackM = new CStack(zDepth, 50, 100, CStack.RADIUS);
 	}
 
 	@Override
@@ -62,9 +62,12 @@ public class DynamicArray extends DataStructure implements ClickListener {
 	@Override
 	public void clear() {
 		A = new Array(zDepth, 0, 150);
-		stackN.capacity = 0;
-		stackC = new CStack(zDepth, 50, 50, CStack.RADIUS);
-		stackM = new CStack(zDepth, 50, 100, CStack.RADIUS);
+		pushstack = new Stack<>();
+		popstack = new Stack<>();
+		newstack.capacity = 0;
+		for (int i = 0; i < 6; i++) {
+			newstack.set(i, Color.BLUE);
+		}
 		A.state = Array.INVISIBLE;
 		panel.scene.add(this);
 		//setStats();
@@ -72,12 +75,14 @@ public class DynamicArray extends DataStructure implements ClickListener {
 
 	@Override
 	public void draw(View v) {
-		stackN.draw(v);
-		stackM.draw(v);
-		stackC.draw(v);
+		newstack.draw(v);
+		for (CStack stack : pushstack) {
+			stack.draw(v);
+		}
+		for (CStack stack : popstack) {
+			stack.draw(v);
+		}
 		A.draw(v);
-		v.drawString("Copy: ", 0, 50, Fonts.LARGE);
-		v.drawString("Resize: ", 0, 100, Fonts.LARGE);
 	}
 
 	@Override
